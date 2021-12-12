@@ -5,8 +5,7 @@ import { useEffect, useState } from 'react';
 
 const Login =()=>
 {
-    const [ user , setUser] = useState(null);
-    const [ message , setMessage] = useState('');
+    const [ user , setUser] = useState('');
    
     const handleSubmit = (e) =>
     {
