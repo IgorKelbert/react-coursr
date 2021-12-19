@@ -10,8 +10,21 @@ const Login =()=>
     const handleSubmit = (e) =>
     {
         e.preventDefault();
-        setUser("Igor");
-        
+       
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({email: 'yariv@nerdeez.com', password: '12345678'})
+        };
+        fetch("https://academeez-login-ex.herokuapp.com/api/users/login", requestOptions)
+        .then((response) => {
+              return response.json();
+            })
+        .then((result ) => 
+            {   
+                setUser(result )
+            }
+            );
     }
 
    /* useEffect(() => {
@@ -33,7 +46,7 @@ const Login =()=>
                 <Button variant="contained" value="Submit" type="submit">Submit</Button>
             </Grid>
         </Grid>
-        <h1> {`hello ${user} you are now logged in`} </h1>
+        <h1> {`hello ${user.firstname} you are now logged in`} </h1>
     </form>)
 }
 
