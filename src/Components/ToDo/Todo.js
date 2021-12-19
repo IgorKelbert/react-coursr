@@ -8,7 +8,7 @@ const Todo = () =>{
 
     const [dense, setDense] = useState(false);
     const [secondary, setSecondary] = useState(false);
-    const [ data, changeToDoData] = useState(null);
+    const [ data, changeToDoData] = useState([]);
 
     useEffect(() =>
     {
