@@ -2,69 +2,54 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useEffect, useState } from 'react';
-import { Formik, validateYupSchema,Form } from 'formik';
+import { Formik, validateYupSchema,Form,useFormik } from 'formik';
+import useServerFetch from '../../Hooks/useServerFetch';
+import { useNavigate  } from "react-router-dom"
 
 const Login =()=>
 {
-    const [ user , setUser] = useState('');
+    const [ user, setUser] = useState({firstname:'', lastname:''}); 
     /*const [ txtMail , setMail] = useState('');
     const [ txtPassword, setPassword] = useState('');*/
-    const handleSubmit = (values, {setSubmitting}) =>
+    const data =  useServerFetch();
+    const navigate = useNavigate();
+    
+    const handleSubmit = async (values, {setSubmitting}) =>
     {
         setSubmitting(false) ;
-       
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({email: `${values.txtUser}`, password: `${values.txtPassword}`})
-        };
-        fetch("https://academeez-login-ex.herokuapp.com/api/users/login", requestOptions)
-        .then((response) => {
-              return response.json();
-            })
-        .then((result ) => 
-            {   
-                setUser(result )
-            }
-            );
+        const myData = await data('application/json', "https://academeez-login-ex.herokuapp.com/api/users/login", JSON.stringify({email: `${formik.values.email}`, password: `${formik.values.password}`}), 'POST');
+        setUser(myData);
+        navigate('/Todo');
     }
 
-   /* function handleMailChange( e ){
-        setMail(e.target.value); 
-    }
-
-    function handlePasswordChange(e){
-        setPassword(e.target.value);
-    }*/
-
-   /* useEffect(() => {
-        setMessage();
-    }, [user])
-*/
-    return(
-        <Formik onSubmit = {handleSubmit} initialValues = {{ txtUser: '', txtPassword: '' }}>
-             {({
-         values,
-         
-       }) =>(
-        <Form>
-        <Grid container spacing={2}>
-            <Grid item md={8}>
-                
-                <TextField variant="outlined" name = "txtUser" id="txtUser" label="user"  />
+    const formik = useFormik({
+        initialValues: {
+          email: '',
+          password: '',
+        },
+        onSubmit: handleSubmit
+        },
+      );
+   
+    return (
+        <form onSubmit={formik.handleSubmit}>
+            <Grid container spacing={2}>
+                <Grid item md={8}>
+                    
+                    <TextField variant="outlined" name = "email" id="txtUser" label="user" value={formik.values.email} onChange={formik.handleChange} />
+                </Grid>
+                <Grid item md={8}>
+                    
+                    <TextField  variant="outlined" type="password" name = "password" id="txtPassword" label="pass" value={formik.values.password} onChange={formik.handleChange}  />
+                </Grid>
+                <Grid item md={8}>
+                    <Button variant="contained" value="Submit" type="submit">Submit</Button>
+                </Grid>
             </Grid>
-            <Grid item md={8}>
-                
-                <TextField  variant="outlined" type="password" name = "txtPassword" id="txtPassword" label="pass"   />
-            </Grid>
-            <Grid item md={8}>
-                <Button variant="contained" value="Submit" type="submit">Submit</Button>
-            </Grid>
-        </Grid>
-        <h1> {`hello ${user.firstname} you are now logged in`} </h1> 
-        </Form>
-        )}
-    </Formik>)
+            <h1> {`hello ${user.firstname} you are now logged in`} </h1> 
+        </form>
+        
+    )
 }
 
 export default Login;

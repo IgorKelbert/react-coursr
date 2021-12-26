@@ -2,6 +2,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { useState , useEffect} from 'react'
+import useServerFetch from '../../Hooks/useServerFetch';
 
 
 const Todo = () =>{
@@ -9,18 +10,13 @@ const Todo = () =>{
     const [dense, setDense] = useState(false);
     const [secondary, setSecondary] = useState(false);
     const [ data, changeToDoData] = useState([]);
-
+    const getData = useServerFetch();
     useEffect(() =>
     {
-        fetch("https://nztodo.herokuapp.com/api/tasks/?format=json")
-        .then((response) => {
-              return response.json();
-            })
-        .then((result ) => 
-            {   
-                changeToDoData(result )
-            }
-            );
+        (async () =>{
+        const myData = await getData('application/json', "https://nztodo.herokuapp.com/api/tasks/?format=json", null, 'GET');
+        changeToDoData(myData );
+        })();
     },[])
 
     return (
