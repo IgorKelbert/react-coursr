@@ -9,6 +9,7 @@ import { useNavigate  } from "react-router-dom"
 const Login =()=>
 {
     const [ user, setUser] = useState({firstname:'', lastname:''}); 
+    const [ authorized ,setAuthorazed] = useState('1');
     /*const [ txtMail , setMail] = useState('');
     const [ txtPassword, setPassword] = useState('');*/
     const data =  useServerFetch();
@@ -17,9 +18,14 @@ const Login =()=>
     const handleSubmit = async (values, {setSubmitting}) =>
     {
         setSubmitting(false) ;
-        const myData = await data('application/json', "https://academeez-login-ex.herokuapp.com/api/users/login", JSON.stringify({email: `${formik.values.email}`, password: `${formik.values.password}`}), 'POST');
-        setUser(myData);
-        navigate('/Todo');
+        try{
+            const myData = await data('application/json', "https://academeez-login-ex.herokuapp.com/api/users/login", JSON.stringify({email: `${formik.values.email}`, password: `${formik.values.password}`}), 'POST');
+            setUser(myData);
+            navigate('/Todo');
+        }
+        catch {
+            setAuthorazed(null);           
+        }
     }
 
     const formik = useFormik({
@@ -32,7 +38,7 @@ const Login =()=>
       );
    
     return (
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit} className='loginGrid' >
             <Grid container spacing={2}>
                 <Grid item md={8}>
                     
@@ -46,7 +52,7 @@ const Login =()=>
                     <Button variant="contained" value="Submit" type="submit">Submit</Button>
                 </Grid>
             </Grid>
-            <h1> {`hello ${user.firstname} you are now logged in`} </h1> 
+            <h1> {!authorized && 'Login failed'} </h1> 
         </form>
         
     )

@@ -1,5 +1,9 @@
 .App {
-  text-align: flex;
+  display:flex;
+  justify-content:center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vp;
 }
 
 .App-logo {
@@ -35,4 +39,9 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.loginGrid {
+    margin-top: 25px;
+    height: 100vp;
 }

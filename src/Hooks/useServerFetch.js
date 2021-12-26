@@ -10,13 +10,15 @@ const useServerFetch = () =>{
         };
         return fetch(url, requestOptions)
         .then((response) => {
+            if(response.status = '401')
+                throw "Not Authorized";
             return response.json();
             })
-        .then((result ) => 
+        .then((result) => 
             {   
-                
                 return result;
-            });
+            }
+            );
     }
     return dataMethod;
 }
