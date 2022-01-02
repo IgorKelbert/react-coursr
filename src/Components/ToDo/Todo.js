@@ -3,6 +3,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { useState , useEffect} from 'react'
 import useServerFetch from '../../Hooks/useServerFetch';
+import { store } from '../../redux/Store'
+import { toDoReducer } from '../../redux/todo.reducer';
 
 
 const Todo = () =>{
@@ -15,6 +17,7 @@ const Todo = () =>{
     {
         (async () =>{
         const myData = await getData('application/json', "https://nztodo.herokuapp.com/api/tasks/?format=json", null, 'GET');
+        store.dispatch(toDoReducer.actions.setData(myData));
         changeToDoData(myData );
         })();
     },[])

@@ -1,19 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
+import { useReducer } from 'react';
+import { userReducer } from './user.reducer'
+import { toDoReducer } from './todo.reducer'
 
 export const store = configureStore({
-    reducer: (state,action) =>{
-        if(action.type == "Login")
-        {
-            const {firstName , lastName}  = action.payload.myData;
-                    return {
-                ...state,
-                user: {firstName : firstName, lastName : lastName }
-            }
-        } else {
-            return state;
-        }
-    },
-    preloadedState: { 
-        user : {firstName : "Unknown", lastName : "user"}
+    reducer: {
+        user: userReducer.reducer,
+        toDo: toDoReducer.reducer
     }
 })
