@@ -4,9 +4,14 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
+import { useSelector } from 'react-redux'
 
 const Header = ({ user }) =>
 {
+    const userx = useSelector((state)=>{
+        return state.user;
+    }
+    );
     return (
         <AppBar position="static">
         <Toolbar >
@@ -19,7 +24,7 @@ const Header = ({ user }) =>
             >
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Hello {user.firstName} {user.lastName} {user.email}     
+                Hello {userx.firstName} {userx.lastName} {user.email}     
             </Typography>
         </Toolbar>
       </AppBar>
