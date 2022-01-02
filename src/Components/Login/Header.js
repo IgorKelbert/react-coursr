@@ -24,7 +24,7 @@ const Header = ({ user }) =>
             >
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Hello {userx.firstName} {userx.lastName} {user.email}     
+                Hello {userx?.firstName} {userx?.lastName}   
             </Typography>
         </Toolbar>
       </AppBar>

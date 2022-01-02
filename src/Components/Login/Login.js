@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Formik, validateYupSchema,Form,useFormik } from 'formik';
 import useServerFetch from '../../Hooks/useServerFetch';
 import { useNavigate  } from "react-router-dom"
+import { store } from '../../redux/Store'
 
 const Login =()=>
 {
@@ -20,7 +21,7 @@ const Login =()=>
         setSubmitting(false) ;
         try{
             const myData = await data('application/json', "https://academeez-login-ex.herokuapp.com/api/users/login", JSON.stringify({email: `${formik.values.email}`, password: `${formik.values.password}`}), 'POST');
-            setUser(myData);
+            store.dispatch({ type: "Login", payload: { myData} });
             navigate('/Todo');
         }
         catch {
